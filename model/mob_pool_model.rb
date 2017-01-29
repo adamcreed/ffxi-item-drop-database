@@ -1,7 +1,9 @@
 require 'active_record'
 
 class MobPool < ActiveRecord::Base
-  validates :pool_id,
+  self.primary_key = 'id'
+  has_many :mob_groups
+  validates :id,
             :name,
             :packet_name,
             :family_id,

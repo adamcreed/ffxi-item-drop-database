@@ -1,10 +1,10 @@
-require_relative 'environment'
+require_relative '../environment'
 
 class CreateMobPoolsTable < ActiveRecord::Migration[5.0]
 
   def up
-    create_table :mob_pools do |t|
-      t.integer :pool_id
+    create_table :mob_pools, id: false do |t|
+      t.primary_key :id
       t.string :name
       t.string :packet_name
       t.integer :family_id

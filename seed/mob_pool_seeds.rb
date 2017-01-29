@@ -1,11 +1,11 @@
-require_relative 'environment'
-require_relative 'mob_pools_model'
+require_relative '../environment'
+require_relative '../model/mob_pool_model'
 require 'csv'
 
 def main
   CSV.foreach('data/mob_pools') do |row|
     mob_pool = MobPool.create(
-    pool_id:          row[0],
+    id:          row[0],
     name:             row[1],
     packet_name:      row[2],
     family_id:        row[3],
