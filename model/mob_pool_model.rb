@@ -1,7 +1,6 @@
 require 'active_record'
 
 class MobPool < ActiveRecord::Base
-  self.primary_key = 'id'
   has_many :mob_groups
   validates :id,
             :name,
@@ -29,4 +28,6 @@ class MobPool < ActiveRecord::Base
             :roam_flag,
             :skill_list_id,
             presence: true
+
+  self.primary_key = 'id'
 end

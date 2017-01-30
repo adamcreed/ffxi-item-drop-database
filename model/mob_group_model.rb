@@ -1,9 +1,9 @@
 require 'active_record'
 
 class MobGroup < ActiveRecord::Base
-  self.primary_key = 'id'
   belongs_to :mob_drop_list
   belongs_to :mob_pool
+  belongs_to :zone
   validates :id,
             :mob_pool_id,
             :zone_id,
@@ -16,4 +16,6 @@ class MobGroup < ActiveRecord::Base
             :max_level,
             :allegiance,
             presence: true
+
+  self.primary_key = 'id'
 end

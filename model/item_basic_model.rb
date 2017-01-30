@@ -1,8 +1,10 @@
 require 'active_record'
 
 class ItemBasic < ActiveRecord::Base
-  self.primary_key = 'id'
   has_many :mob_drop_lists
+  has_many :mob_groups, :through => :mob_drop_lists
+  has_many :mob_pools, :through => :mob_groups
+  has_many :zones, :through => :mob_groups
   validates :id,
             :sub_id,
             :name,
@@ -13,4 +15,6 @@ class ItemBasic < ActiveRecord::Base
             :no_sale,
             :base_sale,
             presence: true
+
+  self.primary_key = 'id'
 end
