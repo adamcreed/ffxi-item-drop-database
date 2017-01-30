@@ -4,7 +4,7 @@ class Display
   def initialize
     @results = 0
     @row = 0
-    @pool = 0
+    @item = 0
     @current_mob = ''
     @next_mob = ''
   end
@@ -15,38 +15,58 @@ class Display
   end
 
   def search_results
-    until @row >= @results.size
+    until end_of_results?
       print_row
-      puts '' unless @results[@row].mob_pools[@pool].nil?
+      puts '' unless pool_is_empty?
       @row += 1
     end
   end
 
   def print_row
-    @pool = 0
-    until @pool >= @results[@row].mob_drop_lists.size do
-      puts "Name: #{sanitize_field(@results[@row].mob_pools[@pool].name)}, " \
+    @item = 0
+    until drop_list_is_empty? do
+      puts "Name: #{sanitize_field(@results[@row].mob_pools[@item].name)}, " \
            "Item: #{sanitize_field(@results[@row].name)}, " \
-           "Rate: #{@results[@row].mob_drop_lists[@pool].rate.to_f / 10}%, " \
-           "Zone: #{sanitize_field(@results[@row].zones[@pool].name)}"
+           "Rate: #{@results[@row].mob_drop_lists[@item].rate.to_f / 10}%, " \
+           "Zone: #{sanitize_field(@results[@row].zones[@item].name)}"
 
-      @current_mob = "#{@results[@row].mob_pools[@pool].name}, " \
-                      "#{@results[@row].zones[@pool].name}"
+      @current_mob = "#{@results[@row].mob_pools[@item].name}, " \
+                      "#{@results[@row].zones[@item].name}"
 
-      @pool += 1
-      check_for_next_row
+      go_to_next_item
     end
   end
 
-  def check_for_next_row
-    if @results[@row].mob_pools[@pool].nil?
-      puts ''
-      @next_mob = ''
-      @current_mob = ''
+  def go_to_next_item
+    @item += 1
+    if pool_is_empty?
+      reset_pool
     else
-      @next_mob = "#{@results[@row].mob_pools[@pool].name}, #{@results[@row].zones[@pool].name}"
-      puts '' unless @next_mob == @current_mob
+      @next_mob = "#{@results[@row].mob_pools[@item].name}, #{@results[@row].zones[@item].name}"
+      puts '' unless item_is_from_same_mob?
     end
+  end
+
+  def end_of_results?
+    @row >= @results.size
+  end
+
+  def pool_is_empty?
+    @results[@row].mob_pools[@item].nil?
+  end
+
+  def drop_list_is_empty?
+    @results[@row].mob_drop_lists[@item].nil?
+  end
+
+  def item_is_from_same_mob?
+    @next_mob == @current_mob
+  end
+
+  def reset_pool
+    puts ''
+    @next_mob = ''
+    @current_mob = ''
   end
 
   def sanitize_field(text)
