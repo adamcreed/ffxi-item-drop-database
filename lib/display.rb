@@ -25,10 +25,10 @@ class Display
   def print_row
     @pool = 0
     until @pool >= @results[@row].mob_drop_lists.size do
-      puts "Name: #{@results[@row].mob_pools[@pool].name}, " \
-           "Item: #{@results[@row].name}, " \
+      puts "Name: #{sanitize_field(@results[@row].mob_pools[@pool].name)}, " \
+           "Item: #{sanitize_field(@results[@row].name)}, " \
            "Rate: #{@results[@row].mob_drop_lists[@pool].rate.to_f / 10}%, " \
-           "Zone: #{@results[@row].zones[@pool].name}"
+           "Zone: #{sanitize_field(@results[@row].zones[@pool].name)}"
 
       @current_mob = "#{@results[@row].mob_pools[@pool].name}, " \
                       "#{@results[@row].zones[@pool].name}"
@@ -47,5 +47,9 @@ class Display
       @next_mob = "#{@results[@row].mob_pools[@pool].name}, #{@results[@row].zones[@pool].name}"
       puts '' unless @next_mob == @current_mob
     end
+  end
+
+  def sanitize_field(text)
+    text.gsub(/'/){''}
   end
 end
